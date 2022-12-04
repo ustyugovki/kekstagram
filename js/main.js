@@ -1,6 +1,8 @@
-const MIN_INTEGER = 1;
-const MAX_INTEGER = 25;
+const MIN = 1;
+const MAX = 25;
+const clearArray = [];
 const commentLength = 40;
+
 
 /**
  * @param {number} min
@@ -11,11 +13,32 @@ const getRandomInt = (min, max) => {
     return NaN;
   }
 
-  return Math.round((max - min) * Math.random() + min);
+  return Math.floor(Math.random() * (max - min) + min);
 };
 
-getRandomInt(MIN_INTEGER, MAX_INTEGER);
-// console.log(getRandomInt(MIN_INTEGER, MAX_INTEGER));
+
+const getClearArray = (minIn, maxIn) => {
+  for (let i = minIn; i <= maxIn; ++i) {
+    clearArray[i - 1] = i;
+  }
+
+  return clearArray;
+};
+
+
+const getRandomArray = (array) => {
+  let currentIndex = array.length - 1;
+  let randomIndex;
+
+  for (currentIndex; currentIndex > 0; currentIndex--) {
+    randomIndex = Math.floor(getRandomInt(MIN, MAX));
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+};
+getRandomArray(getClearArray(MIN, MAX));
+// console.log(getRandomArray(getClearArray(MIN, MAX)));
 
 
 /**
@@ -29,6 +52,5 @@ const checkLengthString = (value, valueParam) => {
 
   return value;
 };
-
-checkLengthString('Проверка длины комментария', commentLength);
-// console.log(checkLengthString('Проверка длины комментария', commentLength));
+checkLengthString('Длина комментария проверена', commentLength);
+// console.log(checkLengthString('Длина комментария проверена', commentLength));

@@ -1,7 +1,7 @@
-const MIN = 1;
-const MAX = 25;
-const clearArray = [];
-const commentLength = 40;
+const ARRAY_MIN_COUNT = 1;
+const ARRAY_MAX_COUNT = 25;
+// почему при вставке во внутрь функции, цисла повторяются?
+const generatedIds = [];
 
 
 /**
@@ -13,64 +13,35 @@ const getRandomInt = (min, max) => {
   if (!Number.isInteger(min) || min < 0 || !Number.isInteger(max) || max < 0 || max < min) {
     return NaN;
   }
-  // почему при round появляется undefined ???
-  return Math.floor(Math.random() * (max - min) + min);
+  // почему при floor всё умирает ???
+  return Math.round(Math.random() * (max - min) + min);
 };
 
 
 /**
- * Генерирует массив определенного диапазона
- * @param {number} min
- * @param {number} max
- * @returns {number[]}
+ * Проверяет число из getRandomInt на повторение
+ * @returns number
  */
-const getClearArray = (min, max) => {
-  for (let i = min; i <= max; ++i) {
-    clearArray[i - 1] = i;
+const generateId = () => {
+  while (generatedIds.length < ARRAY_MAX_COUNT) {
+    const id = getRandomInt(ARRAY_MIN_COUNT, ARRAY_MAX_COUNT);
+
+    // если получаемый id отсутствует в массиве, добавляем в конец
+    if (!generatedIds.includes(id)) {
+      generatedIds.push(id);
+
+      return id;
+    }
   }
-  return clearArray;
 };
-// console.log(getClearArray(MIN, MAX));
 
 
 /**
  * Генерирует неповторяющийся рандомный массив из диапазона
- * @param {number[]} array
+ * @param {number} length
  */
-const getRandomArray = (array) => {
-  let currentIndex = array.length - 1;
-  let randomIndex = 0;
-  let temp = 0;
+const generateRandomArray = (length) => Array.from({length}, generateId);
 
-  for (currentIndex; currentIndex >= 0; currentIndex--) {
-    randomIndex = getRandomInt(MIN, MAX);
+generateRandomArray(ARRAY_MAX_COUNT);
+// console.log(generateRandomArray(ARRAY_MAX_COUNT));
 
-    // Here's a JavaScript implementation of the Durstenfeld shuffle,
-    // an optimized version of Fisher-Yates:
-    temp = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temp;
-
-    // for ES6/ECMAScript 2015
-    // [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-  }
-
-  return array;
-};
-getRandomArray(getClearArray(MIN, MAX));
-// console.log(getRandomArray(getClearArray(MIN, MAX)));
-
-
-/**
- * @param {string} value
- * @param {number} valueParam
- */
-const checkLengthString = (value, valueParam) => {
-  if (value.length > valueParam) {
-    throw new Error(`Комментарий превышает ${valueParam} символов!!!`);
-  }
-
-  return value;
-};
-checkLengthString('Длина комментария проверена', commentLength);
-// console.log(checkLengthString('Длина комментария проверена', commentLength));

@@ -1,7 +1,57 @@
+/**
+ * @typedef generateComment
+ * @prop {number} id
+ * @prop {string} avatar
+ * @prop {string} message
+ * @prop {string} name
+ */
+
+/**
+ * @typedef generateImage
+ * @prop {number} id
+ * @prop {string} url
+ * @prop {string} description
+ * @prop {number} likes
+ * @prop {generateComment[]} comments
+ */
+
+/**
+ * @typedef {[min: number, max: number]} NumberRange
+ */
+
+/**
+ * @type {[min: number, max: number]}
+ */
+const AVATAR_RANGE = [1, 6];
+
+/**
+ * @type {NumberRange}
+ */
+const LIKES_RANGE = [15, 200];
+
+/**
+ * @type {NumberRange}
+ */
+const COMMENTS_RANGE = [1, 25];
+
+const MESSAGES = [
+  'Клёвая фотография',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают.',
+  'Как можно было поймать такой неудачный момент?!',
+];
+
+const NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+
+const DESCRIPTIONS = ['описание 1', 'описание 2', 'описание 3', 'описание 4', 'описание 5'];
+
 const ARRAY_MIN_COUNT = 1;
 const ARRAY_MAX_COUNT = 25;
-// почему при вставке во внутрь функции, цисла повторяются?
-const generatedIds = [];
+// почему при вставке во внутрь функции, числа повторяются?
+const checkGeneratedId = [];
 
 
 /**
@@ -20,15 +70,14 @@ const getRandomInt = (min, max) => {
 
 /**
  * Проверяет число из getRandomInt на повторение
- * @returns number
  */
 const generateId = () => {
-  while (generatedIds.length < ARRAY_MAX_COUNT) {
+  while (checkGeneratedId.length < ARRAY_MAX_COUNT) {
     const id = getRandomInt(ARRAY_MIN_COUNT, ARRAY_MAX_COUNT);
 
     // если получаемый id отсутствует в массиве, добавляем в конец
-    if (!generatedIds.includes(id)) {
-      generatedIds.push(id);
+    if (!checkGeneratedId.includes(id)) {
+      checkGeneratedId.push(id);
 
       return id;
     }
@@ -37,11 +86,43 @@ const generateId = () => {
 
 
 /**
- * Генерирует неповторяющийся рандомный массив из диапазона
- * @param {number} length
+ * @template Item
+ * @param {Item[]} items
  */
-const generateRandomArray = (length) => Array.from({length}, generateId);
+const getRandomArrayItem = (items) => {
+  const lastIndex = Math.max(0, items.length - 1);
+  const index = getRandomInt(0, lastIndex);
 
-generateRandomArray(ARRAY_MAX_COUNT);
-// console.log(generateRandomArray(ARRAY_MAX_COUNT));
+  return items[index];
+};
 
+/**
+ * @returns {generateComment}
+ */
+const generateComment = (id) => ({
+  id: id,
+  avatar: `img/avatar-${getRandomInt(...AVATAR_RANGE)}.svg`,
+  message: getRandomArrayItem(MESSAGES),
+  name: getRandomArrayItem(NAMES)
+});
+
+/**
+ * @param {number} num
+ * @returns {generateComment[]}
+ */
+const generateArrayComments = (num) => Array.from({length: num}, (_, index) => generateComment(index + 1));
+
+/**
+ * @param {number} id
+ * @returns {generateImage}
+ */
+const generateImage = (id) => ({
+  id: generateId(),
+  url: `photos/${id}.jpg`,
+  description: getRandomArrayItem(DESCRIPTIONS),
+  likes: getRandomInt(...LIKES_RANGE),
+  comments: generateArrayComments(getRandomInt(...COMMENTS_RANGE))
+});
+
+const generateArrayImages = () => Array.from({length: ARRAY_MAX_COUNT}, (_, index) => generateImage(index + 1));
+console.log(generateArrayImages());

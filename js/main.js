@@ -1,25 +1,4 @@
 /**
- * @typedef generateComment
- * @prop {number} id
- * @prop {string} avatar
- * @prop {string} message
- * @prop {string} name
- */
-
-/**
- * @typedef generateImage
- * @prop {number} id
- * @prop {string} url
- * @prop {string} description
- * @prop {number} likes
- * @prop {generateComment[]} comments
- */
-
-/**
- * @typedef {[min: number, max: number]} NumberRange
- */
-
-/**
  * @type {[min: number, max: number]}
  */
 const AVATAR_RANGE = [1, 6];
@@ -96,6 +75,7 @@ const getRandomArrayItem = (items) => {
   return items[index];
 };
 
+
 /**
  * @returns {generateComment}
  */
@@ -106,11 +86,13 @@ const generateComment = (id) => ({
   name: getRandomArrayItem(NAMES)
 });
 
+
 /**
  * @param {number} num
  * @returns {generateComment[]}
  */
 const generateArrayComments = (num) => Array.from({length: num}, (_, index) => generateComment(index + 1));
+
 
 /**
  * @param {number} id
@@ -124,5 +106,10 @@ const generateImage = (id) => ({
   comments: generateArrayComments(getRandomInt(...COMMENTS_RANGE))
 });
 
+
+/**
+ * @returns {generateImage[]}
+ */
 const generateArrayImages = () => Array.from({length: ARRAY_MAX_COUNT}, (_, index) => generateImage(index + 1));
-console.log(generateArrayImages());
+generateArrayImages();
+// console.log(generateArrayImages());

@@ -45,6 +45,39 @@ function checkStringLength (string, length) {
 
 
 
+var numbers = []; // new empty array
+
+var n, p;
+
+let ARRAY_MIN_COUNT = 1;
+let ARRAY_MAX_COUNT = 10;
+
+
+for (let i = 0; i < ARRAY_MAX_COUNT; i++) {
+  do {
+    n = Math.round(Math.random() * (ARRAY_MAX_COUNT - ARRAY_MIN_COUNT) + ARRAY_MIN_COUNT);
+    p = numbers.includes(n);
+
+    if (!p) {
+      numbers.push(n);
+    }
+  }
+  while (p);
+}
+
+console.log(numbers.join(' - '));
+
+
+
+https://translated.turbopages.org/proxy_u/en-ru.ru.c6d1a281-63a47083-49a85c75-74722d776562/https/stackoverflow.com/questions/18806210/generating-non-repeating-random-numbers-in-js
+
+
+
+
+
+
+
+
 /**
  * Генерирует массив определенного диапазона
  * @param {number} min

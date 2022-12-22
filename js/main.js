@@ -111,5 +111,5 @@ const generateImage = (id) => ({
  * @returns {generateImage[]}
  */
 const generateArrayImages = () => Array.from({length: ARRAY_MAX_COUNT}, (_, index) => generateImage(index + 1));
-generateArrayImages();
-// console.log(generateArrayImages());
+
+console.log(generateArrayImages());

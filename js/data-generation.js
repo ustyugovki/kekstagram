@@ -53,8 +53,8 @@ const generateArrayComments = (num) => Array.from({length: num}, (_, index) => g
  * @returns {generateImage}
  */
 const generateImage = (id) => ({
-  id: generateId(),
-  url: `photos/${id}.jpg`,
+  id: id,
+  url: `photos/${generateId()}.jpg`,
   description: getRandomArrayItem(DESCRIPTIONS),
   likes: getRandomInt(...LIKES_RANGE),
   comments: generateArrayComments(getRandomInt(...COMMENTS_RANGE))
